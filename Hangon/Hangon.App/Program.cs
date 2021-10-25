@@ -6,8 +6,17 @@ namespace Hangon.App
     {
         static void Main(string[] args)
         {
+            // bugg: gissa på samma felaktiga bokstav (t.ex Q) flera gånger => antalet gissningar räknas ner (men borde inte det)
+            // bugg: om användaren gissar Q två gånger så skriver bara Q i tidigare-gissnings-listan en gång
+            // bugg: tryck enter direkt ger exception
+            // bugg: om användaren förlorar så ska spelet avslutas
+
+            // feature: hantera att användaren skriver mellanslag innan och efter bokstaven. Så "  m " ska accepteras som M
+
             string secretWord = "M A M M A";
             char[] wordArray = secretWord.ToCharArray();
+
+            // refactor: räkna ut "word" utifrån "secretWord"
             string word = "_ _ _ _ _";
             string usedLetters = "";
             int wrong = 0;
@@ -22,6 +31,7 @@ namespace Hangon.App
                 string letter = Console.ReadLine().ToUpper();
                 if (letter.Length > 1 || !char.IsLetter(Convert.ToChar(letter)))
                 {
+                    // refactor: skapa en metod som skriver ut en röd t.ex (t.ex WriteErrorMessage)
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Invalid guess.");
                     Console.ReadLine();
@@ -30,6 +40,7 @@ namespace Hangon.App
                 }
                 else if (secretWord.IndexOf(letter) != -1)
                 {
+                    // refactor: skapa en metod som skriver ut en grön t.ex (t.ex WriteSuccessMessage)
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Correct!");
 
